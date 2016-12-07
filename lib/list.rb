@@ -26,6 +26,12 @@ class List
     @id = result.first().fetch("id").to_i()
   end
 
+  define_method(:update) do |attributes|
+    @name = attributes.fetch(:name)
+    @id = self.id()
+    DB.exec("UPDATE lists SET name = '#{@name}' WHERE id = #{@id};")
+  end
+
   define_method(:==) do |another_list|
     self.name().==(another_list.name()).&(self.id().==(another_list.id()))
   end

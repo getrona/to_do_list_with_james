@@ -6,7 +6,7 @@ require('pg')
 require('./lib/list')
 require('pry')
 
-DB = PG.connect({:dbname => "to_do_test"})
+DB = PG.connect({:dbname => "to_do"})
 
 # Index Routing
 get('/') do
@@ -39,17 +39,30 @@ get('/list/:id') do
   @current_list_id = list.first().fetch('id')
   # Grabs the tasks from ONLY the corresponding list_id
   @current_tasks = Task.find(id)
+  # binding.pry
   erb(:list)
 end
 
-post('/tasks-form/:id') do
+get("/lists/:id/edit") do
+  @list = List.find(params.fetch("id").to_i())
+  erb(:list_edit)
+end
+
+patch("/lists/:id") do
+  name = params.fetch("name")
+  @list = List.find(params.fetch("id").to_i())
+  @list.first().update({:name => name})
+  erb(:list)
+end
+# End List Page routing
+
+post('/tasks-form/') do
   description = params.fetch('description')
   due_date = params.fetch('due_date')
-  list_id = params.fetch('id').to_i
+  list_id = params.fetch('list_id').to_i
   Task.new({:description => description, :due_date => due_date, :status_done => 'f', :list_id => list_id}).save()
   erb(:success)
 end
-# End List Page routing
 
 # Sorted Tasks Routing
 get('/sort_tasks_asc/:id') do

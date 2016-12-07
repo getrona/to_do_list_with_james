@@ -14,3 +14,21 @@
 
   <button type='submit'>Make list!</button>
 </form>
+
+<p>Create a new task:</p>
+
+<form action="/tasks-form/" method="post">
+  <label for="list_id">Select a List</label>
+  <select id='list_id' name='list_id' type='text'>
+    <% @returned_lists.each() do |list| %>
+      <option value="<%= list.id()%>"> <%= list.name() %> </option>
+    <% end %>
+  </select>
+  <label for='description' type='text'>Task Name</label>
+  <input id="description" name="description" type="text">
+  <br>
+  <label for='due_date' type='text'>Due Date (YYYY-MM-DD)</label>
+  <input id="due_date" name="due_date" type="text">
+  <br>
+  <button class="btn btn-danger" type='submit'>Add task!</button>
+</form>

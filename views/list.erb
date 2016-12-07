@@ -1,24 +1,18 @@
-<h3>Add Tasks for <%= @current_list %> </h3>
+<h3>Add Tasks for <%= @current_list_name %> </h3>
 
 <p>Here is a list of your tasks:</p>
 
+<% if @current_tasks == nil %>
+  <p>No tasks here!</p>
+<% else %>
 <ul>
   <% @current_tasks.each() do |task| %>
     <li><%= task.fetch('description') %></li>
   <% end %>
 </ul>
+<% end %>
 
 <button type="button" name="button"><a href="/sort_tasks_asc/<%= @current_list_id %>">Sort Tasks By Date - Ascending Order</a></button>
 
-<p>Create a new task:</p>
-
-<form action="/tasks-form/<%= @current_list_id %>" method="post">
-  <input id="list_id" name="list_id" value="<%= @current_list_id %>" type="hidden">
-  <label for='description' type='text'>Task Name</label>
-  <input id="description" name="description" type="text">
-  <br>
-  <label for='due_date' type='text'>Due Date (YYYY-MM-DD)</label>
-  <input id="due_date" name="due_date" type="text">
-  <br>
-  <button class="btn btn-danger" type='submit'>Add task!</button>
-</form>
+<p><a href="/lists/<%= @current_list_id %>/edit">Edit <%= @current_list %> list</a></p>
+<p><a href="/">Return to Main Page</a></p>
