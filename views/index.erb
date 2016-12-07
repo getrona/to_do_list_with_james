@@ -1,5 +1,9 @@
 <h1>To Do List</h1>
 
+<% if @returned_lists == nil %>
+<p>There are no lists</p>
+
+<% else %>
 <p>Here are your lists:</p>
 
 <ul>
@@ -7,6 +11,7 @@
     <li><a href="/list/<%= list.id() %>"><%= list.name() %></a></li>
   <% end %>
 </ul>
+<% end %>
 
 <form action="/new_list" method="post">
   <label for='name' type='text'>Create a new list</label>
@@ -15,6 +20,10 @@
   <button type='submit'>Make list!</button>
 </form>
 
+<% if @returned_lists == nil %>
+<p>There are no lists to add tasks to</p>
+
+<% else %>
 <p>Create a new task:</p>
 
 <form action="/tasks-form/" method="post">
@@ -32,3 +41,5 @@
   <br>
   <button class="btn btn-danger" type='submit'>Add task!</button>
 </form>
+
+<% end %>

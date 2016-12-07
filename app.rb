@@ -35,8 +35,8 @@ get('/list/:id') do
   id = (params.fetch('id').to_i)
   list = List.find(id)
   # Grab name and ID for list entry display
-  @current_list_name = list.first().fetch('name')
-  @current_list_id = list.first().fetch('id')
+  @current_list_name = list.name
+  @current_list_id = list.id
   # Grabs the tasks from ONLY the corresponding list_id
   @current_tasks = Task.find(id)
   # binding.pry
@@ -53,6 +53,13 @@ patch("/lists/:id") do
   @list = List.find(params.fetch("id").to_i())
   @list.first().update({:name => name})
   erb(:list)
+end
+
+delete("/lists/:id") do
+  @list = List.find(params.fetch("id").to_i())
+  @list.delete_list()
+  @lists = List.all()
+  erb(:index)
 end
 # End List Page routing
 

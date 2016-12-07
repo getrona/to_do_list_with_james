@@ -1,3 +1,5 @@
+require('pry')
+
 class List
   attr_reader(:name, :id)
 
@@ -18,7 +20,14 @@ class List
   end
 
   define_singleton_method(:find) do |list_primary_key|
-    DB.exec("SELECT * FROM lists WHERE id = '#{list_primary_key}';")
+    all_lists = List.all()
+    found_list = nil
+    all_lists.each() do |list|
+      if list.id() == list_primary_key
+        found_list = list
+      end
+    end
+    found_list
   end
 
   define_method(:save) do
@@ -30,6 +39,11 @@ class List
     @name = attributes.fetch(:name)
     @id = self.id()
     DB.exec("UPDATE lists SET name = '#{@name}' WHERE id = #{@id};")
+  end
+
+  define_method(:delete_list) do
+    DB.exec("DELETE FROM lists WHERE id = #{self.id()};")
+    DB.exec("DELETE FROM tasks WHERE list_id = #{self.id()};")
   end
 
   define_method(:==) do |another_list|
